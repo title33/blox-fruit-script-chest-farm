@@ -86,6 +86,30 @@ function thisCode()
         end
     end)
 
+    local AllowRunService = true
+    local AllowRunServiceBind = Instance.new("BindableFunction")
+    function AllowRunServiceBind.OnInvoke(args)
+        if args == "Enable" then
+            AllowRunService = true
+        elseif args == "Disable" then
+            AllowRunService = false
+        end
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Auto Chest",
+            Text = "Subscribe To NeoWare",
+            Duration = math.huge,
+            Callback = AllowRunServiceBind,
+        })
+    end
+
+    local CoreGui = game:GetService("StarterGui")
+    CoreGui:SetCore("SendNotification", {
+        Title = "Auto Chest",
+        Text = "กดซับด้วย",
+        Duration = math.huge,
+        Callback = AllowRunServiceBind,
+    })
     
     task.spawn(function()
         while true do
@@ -117,36 +141,3 @@ function thisCode()
 end
 
 thisCode()
-
-join = game.Players.localPlayer.Neutral == false
-if _G.Team == nil then
-    _G.Team = "Pirates"
-end
-_G.Team = "Marines"
-if (_G.Team == "Pirates" or _G.Team == "Marines") and not join then
-    repeat wait()
-        pcall(function()
-            join = game.Players.localPlayer.Neutral == false
-            if _G.Team == "Pirates" then
-                for i,v in pairs({"MouseButton1Click", "MouseButton1Down", "Activated"}) do
-                    for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container.Pirates.Frame.ViewportFrame.TextButton[v])) do
-                        v.Function()
-                    end
-                end
-            elseif _G.Team == "Marines" then
-                for i,v in pairs({"MouseButton1Click", "MouseButton1Down", "Activated"}) do
-                    for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container.Marines.Frame.ViewportFrame.TextButton[v])) do
-                        v.Function()
-                    end
-                end
-            else
-                for i,v in pairs({"MouseButton1Click", "MouseButton1Down", "Activated"}) do
-                    for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container.Marines.Frame.ViewportFrame.TextButton[v])) do
-                        v.Function()
-                    end
-                end
-            end
-        end)
-    until join == true
-    game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Visible = false
-end
