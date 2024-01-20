@@ -1,13 +1,5 @@
-_G.Autoteam = true
-
-spawn(function()
-    pcall(function()
-        if _G.Autoteam then
             local args = { [1] = "SetTeam", [2] = "Pirates" } 
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-        end
-    end)
-end)
 
 function thisCode()
     repeat task.wait() until game:IsLoaded()
