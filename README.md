@@ -86,31 +86,6 @@ function thisCode()
         end
     end)
 
-    local AllowRunService = true
-    local AllowRunServiceBind = Instance.new("BindableFunction")
-    function AllowRunServiceBind.OnInvoke(args)
-        if args == "Enable" then
-            AllowRunService = true
-        elseif args == "Disable" then
-            AllowRunService = false
-        end
-        local CoreGui = game:GetService("StarterGui")
-        CoreGui:SetCore("SendNotification", {
-            Title = "Auto Chest",
-            Text = "Subscribe To NeoWare",
-            Duration = math.huge,
-            Callback = AllowRunServiceBind,
-        })
-    end
-
-    local CoreGui = game:GetService("StarterGui")
-    CoreGui:SetCore("SendNotification", {
-        Title = "Auto Chest",
-        Text = "กดซับด้วย",
-        Duration = math.huge,
-        Callback = AllowRunServiceBind,
-    })
-    
     task.spawn(function()
         while true do
             if AllowRunService == true then
@@ -141,3 +116,15 @@ function thisCode()
 end
 
 thisCode()
+
+_G.Autoteam = true
+
+spawn(function()
+while wait(.1) do
+  pcall(function()
+if _G.Autoteam then
+local args = { [1] = "SetTeam", [2] = "Pirates" } game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        end
+    end)
+  end
+end)
