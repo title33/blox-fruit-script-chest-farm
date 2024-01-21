@@ -1,3 +1,22 @@
+
+local function CheckServerChange()
+    local currentPlaceID = game.PlaceId
+    local lastPlaceID = nil
+
+    while true do
+        task.wait(1)  
+
+        if currentPlaceID ~= game.PlaceId then
+            currentPlaceID = game.PlaceId
+            lastPlaceID = currentPlaceID
+
+            
+            thisCode()
+        end
+    end
+end
+
+
 function thisCode()
     repeat task.wait() until game:IsLoaded()
     game:GetService('ReplicatedStorage').Remotes.CommF_:InvokeServer("SetTeam", "Pirates")
@@ -14,12 +33,12 @@ function thisCode()
         writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
     end
 
-    local function TPReturner()
+    function TPReturner()
         local Site
         if foundAnything == "" then
-            Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+            Site = game:GetService('HttpService'):JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
         else
-            Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+            Site = game:GetService('HttpService'):JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
         end
         local ID = ""
         if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
@@ -52,7 +71,7 @@ function thisCode()
                     pcall(function()
                         writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
                         wait()
-                        game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                        game:GetService('TeleportService'):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
                     end)
                     wait(4)
                 end
@@ -60,7 +79,7 @@ function thisCode()
         end
     end
 
-    local function Teleport()
+    function Teleport()
         while wait() do
             pcall(function()
                 TPReturner()
@@ -90,11 +109,6 @@ function thisCode()
         end
     end)
 
-    game:GetService("TeleportService").OnTeleport:Connect(function()
-        
-        Teleport()
-    end)
-
     while true do
         local hasChar = game.Players.LocalPlayer:FindFirstChild("Character")
 
@@ -120,5 +134,9 @@ function thisCode()
         task.wait()
     end
 end
+
+
+task.spawn(CheckServerChange)
+
 
 thisCode()
