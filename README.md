@@ -1,12 +1,6 @@
 function thisCode()
     repeat task.wait() until game:IsLoaded()
-
-    local args = {
-        [1] = "SetTeam",
-        [2] = "Pirates"
-    }
-    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-
+    game:service'ReplicatedStorage'.Remotes.CommF_:InvokeServer("SetTeam", "Pirates")
     local PlaceID = game.PlaceId
     local AllIDs = {}
     local foundAnything = ""
@@ -21,7 +15,7 @@ function thisCode()
     end
 
     function TPReturner()
-        local Site;
+        local Site
         if foundAnything == "" then
             Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
         else
@@ -31,12 +25,12 @@ function thisCode()
         if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
             foundAnything = Site.nextPageCursor
         end
-        local num = 0;
-        for i,v in pairs(Site.data) do
+        local num = 0
+        for i, v in pairs(Site.data) do
             local Possible = true
             ID = tostring(v.id)
             if tonumber(v.maxPlayers) > tonumber(v.playing) then
-                for _,Existing in pairs(AllIDs) do
+                for _, Existing in pairs(AllIDs) do
                     if num ~= 0 then
                         if ID == tostring(Existing) then
                             Possible = false
@@ -78,13 +72,14 @@ function thisCode()
     end
 
     local veryImportantWaitTime = 0.5
+
     task.spawn(function()
         while task.wait(veryImportantWaitTime) do
             pcall(function()
-                for i,v in pairs(game.CoreGui:GetDescendants()) do
+                for i, v in pairs(game.CoreGui:GetDescendants()) do
                     pcall(function()
-                        if string.find(v.Name,"ErrorMessage") then
-                            if string.find(v.Text,"Security kick") then
+                        if string.find(v.Name, "ErrorMessage") then
+                            if string.find(v.Text, "Security kick") then
                                 veryImportantWaitTime = 1e9
                                 Teleport()
                             end
@@ -95,20 +90,22 @@ function thisCode()
         end
     end)
 
-task.spawn(function()
     while true do
         local hasChar = game.Players.LocalPlayer:FindFirstChild("Character")
-        if hasChar then
-            local hasCrewTag = hasChar:FindFirstChild("CrewBBG",true)
-            if hasCrewTag then hasCrewTag:Destroy() end
-            local hasHumanoid = hasChar:FindFirstChild("Humanoid")
+
+        if not game.Players.LocalPlayer.Character then
+        else
+            local hasCrewTag = game.Players.LocalPlayer.Character:FindFirstChild("CrewBBG", true)
+            if hasCrewTag then
+                hasCrewTag:Destroy()
+            end
+            local hasHumanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
             if hasHumanoid then
                 local Chest = game.Workspace:FindFirstChild("Chest4") or game.Workspace:FindFirstChild("Chest3") or game.Workspace:FindFirstChild("Chest2") or game.Workspace:FindFirstChild("Chest1") or game.Workspace:FindFirstChild("Chest")
 
                 if Chest then
-                    hasChar:PivotTo(Chest:GetPivot())
-                    hasChar:Move(Vector3.new(0, 0, 0))
-                    Chest.Touched:Fire(hasHumanoid)
+                    game.Players.LocalPlayer.Character:PivotTo(Chest:GetPivot())
+                    firesignal(Chest.Touched, game.Players.LocalPlayer.Character.HumanoidRootPart)
                 else
                     Teleport()
                     break
@@ -117,7 +114,6 @@ task.spawn(function()
         end
         task.wait()
     end
-end)
-
+end
 
 thisCode()
