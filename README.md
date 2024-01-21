@@ -98,29 +98,26 @@ function thisCode()
     end
   end)
   
-  while true do
-    local hasChar = game.Players.LocalPlayer:FindFirstChild("Character")
-    
-    if not game.Players.LocalPlayer.Character then
-    else
-      local hasCrewTag = game.Players.LocalPlayer.Character:FindFirstChild("CrewBBG", true)
-      if hasCrewTag then hasCrewTag:Destroy() end
-      local hasHumanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-      if hasHumanoid then
-        local Chest = game.Workspace:FindFirstChild("Chest4") or game.Workspace:FindFirstChild("Chest3") or game.Workspace:FindFirstChild("Chest2") or game.Workspace:FindFirstChild("Chest1") or game.Workspace:FindFirstChild("Chest")
+while true do
+  local hasChar = game.Players.LocalPlayer:FindFirstChild("Character")
+  if not game.Players.LocalPlayer.Character then
+  else
+    local hasCrewTag = game.Players.LocalPlayer.Character:FindFirstChild("CrewBBG", true)
+    if hasCrewTag then hasCrewTag:Destroy() end
+    local hasHumanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+    if hasHumanoid then
+      local Chest = game.Workspace:FindFirstChild("Chest4") or game.Workspace:FindFirstChild("Chest3") or game.Workspace:FindFirstChild("Chest2") or game.Workspace:FindFirstChild("Chest1") or game.Workspace:FindFirstChild("Chest")
+      
+      if Chest then
+        game.Players.LocalPlayer.Character:PivotTo(Chest:GetPivot())
+        Chest.Touched:Fire(game.Players.LocalPlayer.Character.HumanoidRootPart)
+      else
+        Teleport()
         
-        if Chest then
-          game.Players.LocalPlayer.Character:PivotTo(Chest:GetPivot())
-          Chest.Touched:Fire(game.Players.LocalPlayer.Character.HumanoidRootPart) -- แก้ firesignal เป็น Fire
-        else
-          Teleport()
-          break
-        end
       end
     end
-    
-    task.wait()
   end
+  
+  task.wait()
 end
 
-thisCode()
