@@ -86,7 +86,15 @@ function thisCode()
         end
     end)
 
-    
+    local AllowRunService = true
+    local AllowRunServiceBind = Instance.new("BindableFunction")
+    function AllowRunServiceBind.OnInvoke(args)
+        if args == "Enable" then
+            AllowRunService = true
+        elseif args == "Disable" then
+            AllowRunService = false
+        end
+
     task.spawn(function()
         while true do
             if AllowRunService == true then
