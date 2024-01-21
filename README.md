@@ -67,14 +67,13 @@ function thisCode()
     end
 
     function Teleport()
-        while true do
+        while wait() do
             pcall(function()
                 TPReturner()
                 if foundAnything ~= "" then
                     TPReturner()
                 end
             end)
-            wait(1) 
         end
     end
 
@@ -96,29 +95,29 @@ function thisCode()
         end
     end)
 
+task.spawn(function()
     while true do
         local hasChar = game.Players.LocalPlayer:FindFirstChild("Character")
-        if not game.Players.LocalPlayer.Character then
-          
-        else
-            local hasCrewTag = game.Players.LocalPlayer.Character:FindFirstChild("CrewBBG",true)
+        if hasChar then
+            local hasCrewTag = hasChar:FindFirstChild("CrewBBG",true)
             if hasCrewTag then hasCrewTag:Destroy() end
-            local hasHumanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+            local hasHumanoid = hasChar:FindFirstChild("Humanoid")
             if hasHumanoid then
                 local Chest = game.Workspace:FindFirstChild("Chest4") or game.Workspace:FindFirstChild("Chest3") or game.Workspace:FindFirstChild("Chest2") or game.Workspace:FindFirstChild("Chest1") or game.Workspace:FindFirstChild("Chest")
 
                 if Chest then
-                    game.Players.LocalPlayer.Character:PivotTo(Chest:GetPivot())
-                    game.Players.LocalPlayer.Character:Move(Vector3.new(0, 0, 0))
-                    Chest.Touched:Fire(game.Players.LocalPlayer.Character.Humanoid)
+                    hasChar:PivotTo(Chest:GetPivot())
+                    hasChar:Move(Vector3.new(0, 0, 0))
+                    Chest.Touched:Fire(hasHumanoid)
                 else
                     Teleport()
                     break
                 end
             end
         end
-        wait(1) 
+        task.wait()
     end
-end
+end)
+
 
 thisCode()
