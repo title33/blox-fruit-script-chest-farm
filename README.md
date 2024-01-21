@@ -67,13 +67,14 @@ function thisCode()
     end
 
     function Teleport()
-        while wait() do
+        while true do
             pcall(function()
                 TPReturner()
                 if foundAnything ~= "" then
                     TPReturner()
                 end
             end)
+            wait(1) 
         end
     end
 
@@ -95,33 +96,29 @@ function thisCode()
         end
     end)
 
-    task.spawn(function()
-        while true do
-            
-            local hasChar = game.Players.LocalPlayer:FindFirstChild("Character")
-            if not game.Players.LocalPlayer.Character then
+    while true do
+        local hasChar = game.Players.LocalPlayer:FindFirstChild("Character")
+        if not game.Players.LocalPlayer.Character then
+          
+        else
+            local hasCrewTag = game.Players.LocalPlayer.Character:FindFirstChild("CrewBBG",true)
+            if hasCrewTag then hasCrewTag:Destroy() end
+            local hasHumanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+            if hasHumanoid then
+                local Chest = game.Workspace:FindFirstChild("Chest4") or game.Workspace:FindFirstChild("Chest3") or game.Workspace:FindFirstChild("Chest2") or game.Workspace:FindFirstChild("Chest1") or game.Workspace:FindFirstChild("Chest")
 
-            else
-                local hasCrewTag = game.Players.LocalPlayer.Character:FindFirstChild("CrewBBG",true)
-                if hasCrewTag then hasCrewTag:Destroy() end
-                local hasHumanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-                if hasHumanoid then
-                    local Chest = game.Workspace:FindFirstChild("Chest4") or game.Workspace:FindFirstChild("Chest3") or game.Workspace:FindFirstChild("Chest2") or game.Workspace:FindFirstChild("Chest1") or game.Workspace:FindFirstChild("Chest")
-
-                    if Chest then
-                        game.Players.LocalPlayer.Character:PivotTo(Chest:GetPivot())
-                        
-                        game.Players.LocalPlayer.Character:Move(Vector3.new(0, 0, 0))
-                        Chest.Touched:Fire(game.Players.LocalPlayer.Character.Humanoid)
-                    else
-                        Teleport()
-                        break
-                    end
+                if Chest then
+                    game.Players.LocalPlayer.Character:PivotTo(Chest:GetPivot())
+                    game.Players.LocalPlayer.Character:Move(Vector3.new(0, 0, 0))
+                    Chest.Touched:Fire(game.Players.LocalPlayer.Character.Humanoid)
+                else
+                    Teleport()
+                    break
                 end
             end
-            task.wait()
         end
-    end)
+        wait(1) 
+    end
 end
 
 thisCode()
