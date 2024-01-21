@@ -1,6 +1,6 @@
 function thisCode()
     repeat task.wait() until game:IsLoaded()
-    game:service'ReplicatedStorage'.Remotes.CommF_:InvokeServer("SetTeam", "Pirates")
+    game:GetService('ReplicatedStorage').Remotes.CommF_:InvokeServer("SetTeam", "Pirates")
     local PlaceID = game.PlaceId
     local AllIDs = {}
     local foundAnything = ""
@@ -14,7 +14,7 @@ function thisCode()
         writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
     end
 
-    function TPReturner()
+    local function TPReturner()
         local Site
         if foundAnything == "" then
             Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
@@ -60,7 +60,7 @@ function thisCode()
         end
     end
 
-    function Teleport()
+    local function Teleport()
         while wait() do
             pcall(function()
                 TPReturner()
@@ -88,6 +88,11 @@ function thisCode()
                 end
             end)
         end
+    end)
+
+    game:GetService("TeleportService").OnTeleport:Connect(function()
+        
+        Teleport()
     end)
 
     while true do
