@@ -1,14 +1,13 @@
+local args = {
+  [1] = "SetTeam",
+  [2] = "Pirates"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+
 function thisCode()
-
-    repeat task.wait() until game:IsLoaded()
-
-    
-    local args = {
-        [1] = "SetTeam",
-        [2] = "Pirates"
-    }
-    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-
+  repeat task.wait() until game:IsLoaded()
   local PlaceID = game.PlaceId
   local AllIDs = {}
   local foundAnything = ""
@@ -125,9 +124,4 @@ function thisCode()
 
 end
 
-
-
-end
-
 thisCode()
-
