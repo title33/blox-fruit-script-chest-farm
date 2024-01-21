@@ -117,19 +117,4 @@ end
 
 thisCode()
 
-local teamToPick = "Pirates" 
 
-spawn(function()
-    while wait() do
-        if game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Visible == true then
-            local teamButton = game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container[teamToPick].Frame.ViewportFrame.TextButton
-            teamButton.Size = UDim2.new(0, 10000, 0, 10000)
-            teamButton.Position = UDim2.new(-4, 0, -5, 0)
-            teamButton.BackgroundTransparency = 1
-            wait(.5)
-            game:GetService'VirtualUser':Button1Down(Vector2.new(99,99))
-            game:GetService'VirtualUser':Button1Up(Vector2.new(99,99))
-            break
-        end
-    end
-end)
